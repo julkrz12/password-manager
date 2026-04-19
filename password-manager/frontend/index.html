@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Password Manager — MVP</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Password Manager (MVP)</h1>
+      <p class="muted">Lokalny menedżer haseł: szyfrowanie, analiza siły, wykrywanie wycieków (mock), generator.</p>
+    </header>
+
+    <section id="auth">
+      <div class="grid">
+        <div class="card">
+          <h2>Rejestracja</h2>
+          <label>Login <input id="regUser" /></label>
+          <label>Hasło główne <input id="regPass" type="password" /></label>
+          <button id="btnRegister">Utwórz konto</button>
+        </div>
+
+        <div class="card">
+          <h2>Logowanie</h2>
+          <label>Login <input id="logUser" /></label>
+          <label>Hasło główne <input id="logPass" type="password" /></label>
+          <button id="btnLogin">Zaloguj</button>
+          <div class="row">
+            <span class="pill" id="sessionInfo">Brak sesji</span>
+            <button class="secondary" id="btnLogout">Wyloguj</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="tools">
+      <h2>Narzędzia</h2>
+      <div class="grid">
+        <div>
+          <h3>Analiza siły hasła</h3>
+          <label>Hasło <input id="toolPassword" type="password" /></label>
+          <button id="btnStrength">Sprawdź</button>
+          <pre id="strengthOut" class="out"></pre>
+        </div>
+        <div>
+          <h3>Generator</h3>
+          <div class="row">
+            <label>Długość <input id="genLen" type="number" value="16" min="8" max="64" /></label>
+            <button id="btnGen">Wygeneruj</button>
+          </div>
+          <pre id="genOut" class="out"></pre>
+          <h3>Leak check (offline mock)</h3>
+          <button id="btnLeak">Sprawdź wyciek</button>
+          <pre id="leakOut" class="out"></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="vault">
+      <h2>Sejf</h2>
+      <div class="grid">
+        <div>
+          <h3>Dodaj wpis</h3>
+          <label>Tytuł <input id="eTitle" /></label>
+          <label>URL <input id="eUrl" /></label>
+          <label>Login do serwisu <input id="eUser" /></label>
+          <label>Hasło <input id="ePass" type="password" /></label>
+          <label>Notatki <textarea id="eNotes" rows="4"></textarea></label>
+          <button id="btnAdd">Dodaj</button>
+          <div class="row">
+            <button class="secondary" id="btnDup">Duplikaty haseł</button>
+          </div>
+          <pre id="dupOut" class="out"></pre>
+        </div>
+
+        <div>
+          <h3>Twoje wpisy</h3>
+          <button class="secondary" id="btnRefresh">Odśwież</button>
+          <ul id="entries" class="list"></ul>
+          <pre id="entryOut" class="out"></pre>
+        </div>
+      </div>
+    </section>
+
+    <footer class="muted">
+      <small>Uwaga: to projekt edukacyjny (MVP). Sesje są w pamięci procesu — po restarcie serwera trzeba zalogować się ponownie.</small>
+    </footer>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
