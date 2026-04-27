@@ -51,7 +51,17 @@
             <button id="btnGen">Wygeneruj</button>
           </div>
           <pre id="genOut" class="out"></pre>
-          <h3>Leak check (offline mock)</h3>
+          <h3>Leak check </h3>
+
+          <label class="checkbox-row">
+            <input type="checkbox" id="useHibpCheckbox">
+            <span>Sprawdzaj również online (HIBP)</span>
+          </label>
+
+          <small class="muted">
+            Do serwisu HIBP wysyłany jest tylko fragment skrótu SHA-1 (k-anonimowość).
+          </small>
+
           <button id="btnLeak">Sprawdź wyciek</button>
           <pre id="leakOut" class="out"></pre>
         </div>

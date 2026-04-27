@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     database_url: str = f"sqlite:///{(DATA_DIR / 'vault.db').as_posix()}"
     session_ttl_minutes: int = 15
 
-    enable_hibp_range_api: bool = False
+    enable_hibp_range_api: bool = True
     hibp_range_base_url: str = "https://api.pwnedpasswords.com/range/"
     hibp_user_agent: str = "PasswordManagerMVP (educational)"
 

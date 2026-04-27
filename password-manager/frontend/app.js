@@ -79,9 +79,19 @@ $('btnGen').onclick = async () => {
   }catch(e){show('genOut', e.message)}
 };
 
+// $('btnLeak').onclick = async () => {
+//   try{
+//     const res = await post('/tools/leak', {password: $('toolPassword').value});
+//     show('leakOut', res);
+//   }catch(e){show('leakOut', e.message)}
+// };
+
 $('btnLeak').onclick = async () => {
   try{
-    const res = await post('/tools/leak', {password: $('toolPassword').value});
+    const res = await post('/tools/leak', {
+      password: $('toolPassword').value,
+      use_hibp: $('useHibpCheckbox').checked
+    });
     show('leakOut', res);
   }catch(e){show('leakOut', e.message)}
 };
@@ -147,3 +157,5 @@ $('btnDup').onclick = async () => {
 function escapeHtml(s){
   return (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 }
+
+
