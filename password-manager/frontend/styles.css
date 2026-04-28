@@ -20,3 +20,32 @@ button:disabled{opacity:.55;cursor:not-allowed}
 .list{list-style:none;padding:0;margin:10px 0}
 .list li{padding:8px;border:1px solid var(--border);border-radius:10px;margin-bottom:8px;display:flex;justify-content:space-between;gap:10px}
 .list li button{padding:6px 10px;font-size:12px}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.checkbox-row input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.checkbox-row span {
+  line-height: 1.2;
+}
+
+.muted {
+  display: block;
+  font-size: 0.85em;
+  color: #9aa4b2; /* dopasuj do Twojego motywu */
+  margin-bottom: 10px;
+}
+
+.checkbox-row:hover {
+  opacity: 0.85;
+}

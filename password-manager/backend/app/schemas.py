@@ -58,7 +58,7 @@ class StrengthResponse(BaseModel):
 
 class LeakCheckRequest(BaseModel):
     password: str
-
+    use_hibp: bool = False
 
 class LeakCheckResponse(BaseModel):
     offline: dict
