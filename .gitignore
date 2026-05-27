@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment/config
+.env
+.env.*
+
+# SQLite / local database
+*.db
+*.sqlite
+*.sqlite3
+password-manager/backend/data/vault.db
+
+# Keep mock breach list if intentional
+!password-manager/backend/data/breached_sha1.txt
+
+# IDE/system
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs/temp
+*.log
+tmp/
+temp/
