@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Password Manager — MVP</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div id="toastRoot" class="toast-root"></div>
+
+  <div class="container">
+    <header class="hero">
+      <div>
+        <h1>Password Manager</h1>
+        <p>Lokalny menedżer haseł: sejf, generator, analiza siły i sprawdzanie wycieków.</p>
+      </div>
+      <span class="pill" id="sessionInfo">Brak sesji</span>
+    </header>
+
+    <section id="auth" class="grid auth-grid">
+      <div class="card">
+        <h2>Rejestracja</h2>
+        <label>Login <input id="regUser" autocomplete="username" /></label>
+        <label>Hasło główne <input id="regPass" type="password" autocomplete="new-password" /></label>
+        <button id="btnRegister">Utwórz konto</button>
+      </div>
+
+      <div class="card">
+        <h2>Logowanie</h2>
+        <label>Login <input id="logUser" autocomplete="username" /></label>
+        <label>Hasło główne <input id="logPass" type="password" autocomplete="current-password" /></label>
+        <div class="row">
+          <button id="btnLogin">Zaloguj</button>
+          <button class="secondary" id="btnLogout">Wyloguj</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="tools">
+      <h2>Narzędzia</h2>
+      <div class="grid tools-grid">
+        <div>
+          <h3>Analiza siły hasła</h3>
+          <label>Hasło <input id="toolPassword" type="password" autocomplete="off" /></label>
+          <div class="row">
+            <button id="btnStrength">Sprawdź</button>
+            <button class="secondary" id="btnToggleToolPassword" type="button">Pokaż</button>
+          </div>
+
+          <div id="strengthOut" class="result-panel strength-panel">
+            <div class="strength-top">
+              <div>
+                <span class="muted">Siła hasła</span>
+                <strong id="strengthLabel" class="placeholder-text">—</strong>
+              </div>
+              <div id="strengthScore" class="score-badge muted-badge">0%</div>
+            </div>
+
+            <div class="strength-bar">
+              <div id="strengthBarFill"></div>
+            </div>
+
+            <div class="mini-grid">
+              <div class="mini-card">
+                <span>Długość</span>
+                <strong id="strengthLength" class="placeholder-text">—</strong>
+              </div>
+              <div class="mini-card">
+                <span>Entropia</span>
+                <strong id="strengthEntropy" class="placeholder-text">—</strong>
+              </div>
+            </div>
+
+            <div id="strengthIssues" class="issues-placeholder">
+              Uwagi pojawią się po sprawdzeniu hasła
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3>Generator</h3>
+          <div class="row align-end">
+            <label>Długość <input id="genLen" type="number" value="16" min="8" max="64" /></label>
+            <button id="btnGen">Wygeneruj</button>
+          </div>
+
+          <div id="genOut" class="result-panel generator-panel">
+            <span class="muted">Wygenerowane hasło</span>
+            <div class="generated-password-row">
+              <strong id="generatedPassword" class="placeholder-text">—</strong>
+              <button id="copyGeneratedBtn" class="secondary" disabled>Kopiuj</button>
+            </div>
+          </div>
+
+          <h3>Leak check</h3>
+          <label class="checkbox-row">
+            <input type="checkbox" id="useHibpCheckbox">
+            <span>Sprawdzaj również online (HIBP)</span>
+          </label>
+          <small class="muted block">Do serwisu HIBP wysyłany jest tylko fragment skrótu SHA-1.</small>
+          <button id="btnLeak">Sprawdź wyciek</button>
+
+          <div id="leakOut" class="result-panel leak-panel">
+            <span class="muted">Status wycieku</span>
+            <div class="leak-row">
+              <strong id="leakStatus" class="placeholder-text">—</strong>
+              <span id="leakCount">Brak danych</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="vault">
+      <div class="section-header">
+        <h2>Sejf</h2>
+        <span id="entriesCount" class="pill">0 wpisów</span>
+      </div>
+
+      <div class="grid vault-grid">
+        <div>
+          <h3>Dodaj wpis</h3>
+          <form id="entryForm" novalidate>
+            <label>Tytuł <input id="eTitle" /></label>
+            <div id="titleError" class="field-error"></div>
+
+            <label>URL <input id="eUrl" placeholder="https://example.com" /></label>
+
+            <label>Login do serwisu <input id="eUser" /></label>
+
+            <label>Hasło <input id="ePass" type="password" autocomplete="off" /></label>
+            <div id="passError" class="field-error"></div>
+
+            <label>Notatki <textarea id="eNotes" rows="4"></textarea></label>
+
+            <div class="row">
+              <button id="btnAdd" type="submit">Dodaj</button>
+              <button class="secondary" id="btnDup" type="button">Duplikaty haseł</button>
+            </div>
+          </form>
+
+          <div id="dupOut" class="result-panel duplicate-panel">
+            <span class="muted">Duplikaty</span>
+            <strong id="dupStatus" class="placeholder-text">—</strong>
+            <div id="dupList" class="small-list">Wynik pojawi się po sprawdzeniu</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-header slim">
+            <h3>Twoje wpisy</h3>
+            <button class="secondary" id="btnRefresh">Odśwież</button>
+          </div>
+
+          <label>Szukaj wpisu <input id="entrySearch" placeholder="Tytuł albo URL..." /></label>
+
+          <div id="emptyState" class="empty-state">
+            <strong>Brak wpisów</strong>
+            <span>Dodaj pierwszy zapis po lewej albo zaloguj się, aby odświeżyć sejf.</span>
+          </div>
+
+          <ul id="entries" class="list"></ul>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <small>Projekt edukacyjny MVP. Sesje są przechowywane w pamięci procesu serwera.</small>
+    </footer>
+  </div>
+
+  <div id="editModal" class="modal-backdrop hidden">
+    <div class="modal">
+      <div class="section-header">
+        <div>
+          <h2 id="modalTitle">Edytuj wpis</h2>
+          <p class="muted" id="modalSubtitle">Tytuł wpisu jest stały w tej wersji backendu.</p>
+        </div>
+        <button id="btnCloseModal" class="icon-button" type="button">×</button>
+      </div>
+
+      <label>URL <input id="editUrl" /></label>
+      <label>Login <input id="editUser" /></label>
+      <label>Hasło <input id="editPass" type="password" autocomplete="off" /></label>
+      <div id="editPassError" class="field-error"></div>
+      <label>Notatki <textarea id="editNotes" rows="4"></textarea></label>
+
+      <div class="row modal-actions">
+        <button id="btnSaveEdit">Zapisz zmiany</button>
+        <button id="btnDeleteEntry" class="danger" type="button">Usuń wpis</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
